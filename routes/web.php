@@ -6,7 +6,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+     return redirect(route('login', absolute: false));
 });
 
 Route::get('/register', function () {
@@ -16,7 +16,10 @@ Route::get('/register', function () {
 Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])
     ->middleware(['auth', 'verified', 'role:admin'])->name('admin.dashboard');
 Route::get('/employe/dashboard', [EmployeController::class, 'dashboard'])
-    ->middleware(['auth', 'verified', 'role:employe'])->name('employe.dashboard');
+    ->middleware(['auth', 'verified'])->name('employe.dashboard');
+Route::get('mes-taches', [EmployeController::class, 'mesTaches'])
+    ->middleware(['auth', 'verified'])->name('employe.mes-taches');
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');

@@ -10,4 +10,9 @@ class EmployeController extends Controller
     {
         return view('employe.dashboard');
     }
+
+    public function mesTaches()
+    {
+        return view('employe.mes-taches');
+    }
 }
