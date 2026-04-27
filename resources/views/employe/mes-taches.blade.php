@@ -7,7 +7,8 @@
         <div class="col-md-4">
             <div class="card">
                 <div class="card-body">
-                    <form action="" method="POST">
+                    <form action="{{ route('employe.add-tache')}}" method="POST">
+                        @csrf
                         <div class="mb-3">
                             <label for="titre" class="form-label">Titre</label>
                             <input type="text" class="form-control" id="titre" name="titre">
@@ -49,17 +50,43 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @forelse($taches as $tache)
                             <tr>
-                                <td>Task 1</td>
-                                <td>2024-06-01</td>
-                                <td>En cours</td>
-                                <td>Haut</td>
+                                <td>{{ $tache->title }}</td>
+                                <td>{{ Carbon\Carbon::parse($tache->due_date)->format('d-m-Y ') }}</td>
+                                <td>
+                                    @if($tache->is_completed == 'en attente')
+                                    <a class="btn btn-sm btn-warning"
+                                        href="{{ route('employe.change-status',['id' => $tache->id, 'status' => 'en cours']) }}">En
+                                        attente</a>
+                                    @elseif($tache->is_completed == 'en cours')
+                                    <a class="btn btn-sm btn-info"
+                                        href="{{ route('employe.change-status',['id' => $tache->id, 'status' => 'terminé']) }}">En
+                                        cours</a>
+                                    @else
+                                    <span class="text-success">Terminé</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($tache->priority == 'basse')
+                                    Bas
+                                    @elseif($tache->priority == 'moyenne')
+                                    Moyen
+                                    @else
+                                    Haut
+                                    @endif
+                                </td>
                                 <td>
                                     <button class="btn btn-sm btn-primary"><i class="fas fa-fw fa-edit"></i></button>
                                     <button class="btn btn-sm btn-danger"><i class="fas fa-fw fa-trash"></i></button>
                                     <button class="btn btn-sm btn-info"><i class="fas fa-fw fa-eye"></i></button>
                                 </td>
                             </tr>
+                            @empty
+                            <tr>
+                                <td colspan="5" class="text-center">Aucune tache n'est enregistrée</td>
+                            </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>

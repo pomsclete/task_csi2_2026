@@ -17,9 +17,15 @@ Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])
     ->middleware(['auth', 'verified', 'role:admin'])->name('admin.dashboard');
 Route::get('/employe/dashboard', [EmployeController::class, 'dashboard'])
     ->middleware(['auth', 'verified'])->name('employe.dashboard');
-Route::get('mes-taches', [EmployeController::class, 'mesTaches'])
+// Afficher les taches de l'employé
+Route::get('/mes-taches', [EmployeController::class, 'mesTaches'])
     ->middleware(['auth', 'verified'])->name('employe.mes-taches');
-
+// Ajouter une tache
+Route::post('/add-task',[EmployeController::class,'addTache'])
+    ->middleware(['auth', 'verified'])->name('employe.add-tache');
+// Changer le status d'une tache
+Route::get('/change-status/{id}/{status}',[EmployeController::class,'ChangeStatus'])
+    ->middleware(['auth', 'verified'])->name('employe.change-status');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
